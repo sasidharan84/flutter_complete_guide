@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import './transaction.dart';
+import 'package:flutter_complete_guide/widget/transaction_list.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,13 +17,6 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  final List<Transaction> transactions = [
-    Transaction(
-        id: "t1", title: "Buy Book", amount: 50.50, date: DateTime.now()),
-    Transaction(
-        id: "t2", title: "Buy Coffee", amount: 4.50, date: DateTime.now())
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,6 +27,7 @@ class MyHomePage extends StatelessWidget {
           child: Column(
         children: <Widget>[
           Container(
+            margin: EdgeInsets.all(10),
             width: double.infinity,
             alignment: Alignment.center,
             child: Card(
@@ -41,22 +36,29 @@ class MyHomePage extends StatelessWidget {
               elevation: 5,
             ),
           ),
-          Column(
-            children: transactions.map((tx) {
-              return Card(
-                child: Row(
-                  children: [
-                    Container(
-                      child: Text(tx.amount.toString()),
-                    ),
-                    Column(
-                      children: [Text(tx.title), Text(tx.date.toString())],
-                    )
-                  ],
-                ),
-              );
-            }).toList(),
-          )
+          Card(
+            elevation: 5,
+            child: Container(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  TextField(
+                    decoration: InputDecoration(labelText: 'Title'),
+                  ),
+                  TextField(
+                    decoration: InputDecoration(labelText: 'Amount'),
+                  ),
+                  FlatButton(
+                    child: Text('Add Transaction'),
+                    textColor: Colors.purple,
+                    onPressed: () {},
+                  )
+                ],
+              ),
+            ),
+          ),
+          TransactionList(),
         ],
       )),
     );
