@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'widget/chart.dart';
 import 'widget/new_transaction.dart';
 
 import 'model/transaction.dart';
@@ -28,10 +29,22 @@ class MyApp extends StatelessWidget {
                   )),
           textTheme: ThemeData.light().textTheme.copyWith(
                 headline6: TextStyle(
-                  fontFamily: 'OpenSans',
+                  fontFamily: 'Quicksand',
+                  fontWeight: FontWeight.normal,
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
+                headline5: TextStyle(
+                  fontFamily: 'Quicksand',
                   fontWeight: FontWeight.normal,
                   fontSize: 18,
                 ),
+                button: TextStyle(
+                    fontFamily: 'Quicksand',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    backgroundColor: Colors.white,
+                    color: Colors.white),
               )),
     );
   }
@@ -59,11 +72,11 @@ class _MyHomePageState extends State<MyHomePage> {
     //Transaction(id: "t2", title: "Coffee", amount: 4.50, date: DateTime.now())
   ];
 
-  void _addTransaction(String title, double amount) {
+  void _addTransaction(String title, double amount, DateTime date) {
     final newTx = Transaction(
       title: title,
       amount: amount,
-      date: DateTime.now(),
+      date: date,
       id: DateTime.now().toString(),
     );
 
@@ -90,16 +103,11 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Container(
-              margin: EdgeInsets.all(10),
-              width: double.infinity,
-              alignment: Alignment.center,
-              child: Card(
-                color: Colors.blue,
-                child: Text("Chart"),
-                elevation: 5,
-              ),
-            ),
+            Chart(
+                recentTransactions: _userTransactions
+                    .where((element) =>
+                        DateTime.now().difference(element.date).inDays < 7)
+                    .toList()),
             TransactionList(
               userTransactions: _userTransactions,
             ),

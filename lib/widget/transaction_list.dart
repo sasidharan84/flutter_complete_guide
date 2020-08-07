@@ -31,42 +31,33 @@ class TransactionList extends StatelessWidget {
           : ListView.builder(
               itemBuilder: (ctx, index) {
                 return Card(
-                  child: Row(
-                    children: [
-                      Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                color: Theme.of(context).primaryColor,
-                                width: 2)),
-                        child: Text(
-                          "\$${userTransactions[index].amount.toStringAsFixed(2)}",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: Theme.of(context).primaryColor),
-                        ),
-                        padding: EdgeInsets.all(10),
-                        alignment: Alignment.centerLeft,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            userTransactions[index].title,
-                            style: Theme.of(context).textTheme.headline6,
+                    elevation: 5,
+                    margin: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        radius: 30,
+                        backgroundColor: Theme.of(context).primaryColor,
+                        child: Padding(
+                          padding: EdgeInsets.all(6),
+                          child: FittedBox(
+                            child: Text(
+                              "\$${userTransactions[index].amount.toStringAsFixed(2)}",
+                              style: Theme.of(context).textTheme.headline6,
+                            ),
                           ),
-                          Text(
-                            DateFormat("yyyy-MM-dd hh:mm:ss aa")
-                                .format(userTransactions[index].date),
-                            style: TextStyle(color: Colors.grey),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                );
+                        ),
+                      ),
+                      title: Text(
+                        userTransactions[index].title,
+                        style:
+                            Theme.of(context).appBarTheme.textTheme.headline6,
+                      ),
+                      subtitle: Text(
+                        DateFormat("yyyy-MM-dd hh:mm:ss aa")
+                            .format(userTransactions[index].date),
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ));
               },
               itemCount: userTransactions.length,
             ),
