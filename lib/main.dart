@@ -29,22 +29,17 @@ class MyApp extends StatelessWidget {
                   )),
           textTheme: ThemeData.light().textTheme.copyWith(
                 headline6: TextStyle(
-                  fontFamily: 'Quicksand',
+                  fontFamily: 'Opensans',
                   fontWeight: FontWeight.normal,
                   fontSize: 18,
                   color: Colors.white,
                 ),
                 headline5: TextStyle(
-                  fontFamily: 'Quicksand',
+                  fontFamily: 'Opensans',
                   fontWeight: FontWeight.normal,
                   fontSize: 18,
                 ),
-                button: TextStyle(
-                    fontFamily: 'Quicksand',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    backgroundColor: Colors.white,
-                    color: Colors.white),
+                button: TextStyle(color: Colors.white),
               )),
     );
   }
@@ -85,34 +80,52 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _removeTransaction(String id) {
+    setState(() {
+      _userTransactions.removeWhere((element) => element.id == id);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final appBar = AppBar(
+      title: Text("Flutter App"),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () {
+            _popupAddNewTransaction(context);
+          },
+        ),
+      ],
+    );
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Flutter App"),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              _popupAddNewTransaction(context);
-            },
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Chart(
+      appBar: appBar,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            height: (MediaQuery.of(context).size.height -
+                    appBar.preferredSize.height -
+                    MediaQuery.of(context).padding.top) *
+                0.4,
+            child: Chart(
                 recentTransactions: _userTransactions
                     .where((element) =>
                         DateTime.now().difference(element.date).inDays < 7)
                     .toList()),
-            TransactionList(
+          ),
+          Container(
+            height: (MediaQuery.of(context).size.height -
+                    appBar.preferredSize.height -
+                    MediaQuery.of(context).padding.top) *
+                0.6,
+            child: TransactionList(
               userTransactions: _userTransactions,
+              removeTransaction: _removeTransaction,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),

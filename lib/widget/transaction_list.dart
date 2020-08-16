@@ -5,13 +5,13 @@ import 'package:meta/meta.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> userTransactions;
+  final Function removeTransaction;
 
-  TransactionList({@required this.userTransactions});
+  TransactionList({@required this.userTransactions, this.removeTransaction});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
       child: userTransactions.isEmpty
           ? Column(
               children: <Widget>[
@@ -57,6 +57,11 @@ class TransactionList extends StatelessWidget {
                             .format(userTransactions[index].date),
                         style: TextStyle(color: Colors.grey),
                       ),
+                      trailing: IconButton(
+                          icon: Icon(Icons.delete),
+                          color: Theme.of(context).errorColor,
+                          onPressed: () =>
+                              removeTransaction(userTransactions[index].id)),
                     ));
               },
               itemCount: userTransactions.length,
